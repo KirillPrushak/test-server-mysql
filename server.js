@@ -16,26 +16,63 @@ cors({
 // app.use(cors());
 app.use(bodyParser.json());
 
-const dbConfig = {
-  host: "caboose.proxy.rlwy.net",
-  port: 50875,
-  user: "root",
-  password: "EcDYcKALedEALngttIPyFqsIYqFOzPig",
-  database: "railway",
+// const dbConfig = {
+//   host: "caboose.proxy.rlwy.net",
+//   port: 50875,
+//   user: "root",
+//   password: "EcDYcKALedEALngttIPyFqsIYqFOzPig",
+//   database: "railway",
+// };
+
+const getDbConfig = () => {
+  if (process.env.MYSQL_URL) {
+    // Используем URL от Railway
+    return {
+      uri: process.env.MYSQL_URL,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    };
+  } else {
+    // Локальная разработка
+    return {
+      host: process.env.MYSQL_HOST || "caboose.proxy.rlwy.net",
+      port: process.env.MYSQL_PORT ? parseInt(process.env.MYSQL_PORT) : 50875,
+      user: process.env.MYSQL_USER || "root",
+      password:
+        process.env.MYSQL_PASSWORD || "EcDYckAledfAlngttIPyFqsIYqFOzPig",
+      database: process.env.MYSQL_DATABASE || "railway",
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    };
+  }
 };
 
-const pool = mysql.createPool(dbConfig);
+const pool = mysql.createPool(getDbConfig());
 
-export async function getCourses() {
+// export async function getCourses() {
+//   try {
+//     const [rows] = await pool.query("SELECT * FROM courses");
+//     console.log("Courses:", rows);
+//     return rows;
+//   } catch (err) {
+//     console.error("Ошибка при получении курсов:", err);
+//     throw err;
+//   }
+// }
+
+async function testConnection() {
   try {
-    const [rows] = await pool.query("SELECT * FROM courses");
-    console.log("Courses:", rows);
-    return rows;
-  } catch (err) {
-    console.error("Ошибка при получении курсов:", err);
-    throw err;
+    const connection = await pool.getConnection();
+    console.log("Successfully connected to MySQL database");
+    connection.release();
+  } catch (error) {
+    console.error("Database connection failed:", error);
   }
 }
+
+testConnection();
 
 app.get("/courses", async (req, res) => {
   try {
