@@ -17,18 +17,11 @@ cors({
 app.use(bodyParser.json());
 
 const dbConfig = {
-  // user: process.env.prod_user,
-  // password: process.env.prod_password,
-  // database: process.env.prod_database,
-  // host: process.env.prod_host,
-  // port: process.env.prod_port,
   host: "caboose.proxy.rlwy.net",
   port: 50875,
   user: "root",
   password: "EcDYcKALedEALngttIPyFqsIYqFOzPig",
   database: "railway",
-  connectionString:
-    "mysql://root:EcDYcKALedEALngttIPyFqsIYqFOzPig@caboose.proxy.rlwy.net:50875/railway",
 };
 
 const pool = mysql.createPool(dbConfig);
