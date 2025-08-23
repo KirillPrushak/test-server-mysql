@@ -6,13 +6,12 @@ import cors from "cors";
 const app = express();
 const PORT = 6080;
 
-app.use(
-  // cors({
-  //   origin: ["https://test-course-app.netlify.app/", "http://localhost:3000"],
-  //   credentials: true,
-  // })
-  app.use(cors())
-);
+app.use;
+// cors({
+//   origin: ["https://test-course-app.netlify.app/", "http://localhost:3000"],
+//   credentials: true,
+// })
+app.use(cors());
 app.use(bodyParser.json());
 
 const dbConfig = {
@@ -50,4 +49,14 @@ app.get("/courses", async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+});
+
+process.on("SIGTERM", () => {
+  console.log("Received SIGTERM, shutting down gracefully");
+  process.exit(0);
+});
+
+process.on("SIGINT", () => {
+  console.log("Received SIGINT, shutting down gracefully");
+  process.exit(0);
 });
