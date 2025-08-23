@@ -7,11 +7,11 @@ const app = express();
 const PORT = 8080;
 
 app.use;
-// cors({
-//   origin: ["https://test-course-app.netlify.app/", "http://localhost:3000"],
-//   credentials: true,
-// })
-app.use(cors());
+cors({
+  origin: ["https://test-course-app.netlify.app", "http://localhost:3000"],
+  credentials: true,
+});
+// app.use(cors());
 app.use(bodyParser.json());
 
 const dbConfig = {
