@@ -6,6 +6,8 @@ import cors from "cors";
 const app = express();
 const PORT = 8080;
 
+console.log(process.env.prod_user);
+
 app.use;
 cors({
   origin: ["https://test-course-app.netlify.app", "http://localhost:3000"],
@@ -15,13 +17,18 @@ cors({
 app.use(bodyParser.json());
 
 const dbConfig = {
-  host: "localhost",
+  // user: process.env.prod_user,
+  // password: process.env.prod_password,
+  // database: process.env.prod_database,
+  // host: process.env.prod_host,
+  // port: process.env.prod_port,
+  host: "caboose.proxy.rlwy.net",
+  port: 50875,
   user: "root",
-  password: "root",
-  database: "courses",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+  password: "EcDYcKALedEALngttIPyFqsIYqFOzPig",
+  database: "railway",
+  connectionString:
+    "mysql://root:EcDYcKALedEALngttIPyFqsIYqFOzPig@caboose.proxy.rlwy.net:50875/railway",
 };
 
 const pool = mysql.createPool(dbConfig);
