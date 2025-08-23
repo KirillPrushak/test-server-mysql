@@ -5,6 +5,8 @@ import cors from "cors";
 
 const app = express();
 const PORT = 3000;
+const MYSQL_URL =
+  "mysql://root:EcDYcKALedEALngttIPyFqsIYqFOzPig@caboose.proxy.rlwy.net:50875/railway";
 
 console.log(process.env.prod_user);
 
@@ -25,10 +27,10 @@ app.use(bodyParser.json());
 // };
 
 const getDbConfig = () => {
-  if (process.env.MYSQL_URL) {
+  if (MYSQL_URL) {
     // Используем URL от Railway
     return {
-      uri: process.env.MYSQL_URL,
+      uri: MYSQL_URL,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
@@ -36,12 +38,11 @@ const getDbConfig = () => {
   } else {
     // Локальная разработка
     return {
-      host: process.env.MYSQL_HOST || "caboose.proxy.rlwy.net",
-      port: process.env.MYSQL_PORT ? parseInt(process.env.MYSQL_PORT) : 50875,
-      user: process.env.MYSQL_USER || "root",
-      password:
-        process.env.MYSQL_PASSWORD || "EcDYckAledfAlngttIPyFqsIYqFOzPig",
-      database: process.env.MYSQL_DATABASE || "railway",
+      host: "caboose.proxy.rlwy.net",
+      port: 50875,
+      user: "root",
+      password: "EcDYcKALedEALngttIPyFqsIYqFOzPig",
+      database: "railway",
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,
@@ -88,12 +89,12 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
-process.on("SIGTERM", () => {
-  console.log("Received SIGTERM, shutting down gracefully");
-  process.exit(0);
-});
+// process.on("SIGTERM", () => {
+//   console.log("Received SIGTERM, shutting down gracefully");
+//   process.exit(0);
+// });
 
-process.on("SIGINT", () => {
-  console.log("Received SIGINT, shutting down gracefully");
-  process.exit(0);
-});
+// process.on("SIGINT", () => {
+//   console.log("Received SIGINT, shutting down gracefully");
+//   process.exit(0);
+// });
